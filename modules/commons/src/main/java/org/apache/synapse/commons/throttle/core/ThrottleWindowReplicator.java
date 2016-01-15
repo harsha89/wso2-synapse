@@ -144,11 +144,12 @@ public class ThrottleWindowReplicator {
 									// window so present node will set shared timestamp and the distributed counter. Also if time
 									// window expired this will be the node who set the next time window starting time
 								} else {
-									SharedParamManager.setSharedTimestamp(callerId, localFirstAccessTime);
-									SharedParamManager.setDistributedCounter(callerId, 0);
 									//Reset global counter here as throttle replicator task may have updated global counter
 									//with dirty value
 									callerContext.resetGlobalCounter();
+									callerContext.setLocalCounter(1);//Local counter will be one
+									SharedParamManager.setSharedTimestamp(callerId, localFirstAccessTime);
+									SharedParamManager.setDistributedCounter(callerId, 0);
 									if (log.isDebugEnabled()) {
 										log.debug("Complete resetting time window of=" + callerId);
 									}
